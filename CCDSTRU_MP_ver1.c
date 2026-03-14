@@ -17,7 +17,7 @@ I think we still need to figure out how to make this code actually work properly
 //Adding function prototypes
 void removepos(int go, int pos);
 void replace(int go, int pos, int B);
-void expand();
+void expand(int go, int pos);
 void update();
 void nextplayermove();
 void GameOver();
