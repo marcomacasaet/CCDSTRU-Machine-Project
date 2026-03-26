@@ -346,19 +346,18 @@ void nextplayermove(int over, int pos, int good, int start,
         
 }
 
-void GameOver(int *over, int R[3][3], int B[3][3]){
+void GameOver(int *over, int start, int val, int R[3][3], int B[3][3]){
 
     int i, j;
-    int Ramt = 0;
-    int Bamt = 0;
+    int countR = 0;
+    int countB = 0;
 	int Final = 0;
 //just tweaked gameover so that it doesn't force game to end and checks is over is 1. also put the printf inside the if statement.
 
-	if(over == 1){
 		for(i = 0; i < 3; i++){
 			for(j = 0; j < 3; j++){
 				if(R[i][j] != 0){
-					Ramt++;
+					countR++;
 				}
 			}
 		}
@@ -366,17 +365,17 @@ void GameOver(int *over, int R[3][3], int B[3][3]){
 		for(i = 0; i < 3; i++){
 			for(j = 0; j < 3; j++){
 				if(B[i][j] != 0){
-					Bamt++;
+					countB++;
 				}
 			}
 		}
+		
+		Final = 9 - (countR + countB);
 
-		Final = 9 - (Ramt + Bamt);
-
-		if(Final == 3 || val >= 20 || (!start && ((Ramt > 0 && Bamt == 0) || (Ramt == 0 && Bamt > 0)))){
-			*over = 1
+		if(Final == 3 || val >= 20 || (!start && ((countR > 0 && countB == 0) || (countR == 0 && countB > 0)))){
+			*over = 1;
 				}
-
+	if(*over == 1){
     	if(countR > countB){
         	printf("Player 1 (R) wins!");
   	  } else if(countB > countR){
