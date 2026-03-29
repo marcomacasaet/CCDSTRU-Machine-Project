@@ -19,9 +19,9 @@ Incorporated main loop too.
 void removepos(int go, int pos, int R[3][3], int B[3][3], int S[3][3], int T[3][3]);
 void replace(int go, int pos, int R[3][3], int B[3][3], int S[3][3], int T[3][3]);
 void expand(int go, int pos, int R[3][3], int B[3][3], int S[3][3], int T[3][3]);
-void update(int *go, int pos, int *good, int R[3][3], int S[3][3], int B[3][3], int T[3][3]);
+void update(int *go, int pos, int good, int R[3][3], int S[3][3], int B[3][3], int T[3][3]);
 void nextplayermove(int *over, int pos, int *good, int *start, 
-    int *go, int *val, int R[3][3], int B[3][3], int S[3][3], int T[3][3]);
+    int *go, int *val, int R[3][3], int B[3][3], int S[3][3], int T[3][3], int ycoord, int xcoord);
 void GameOver(int *over, int start, int val, int R[3][3], int B[3][3]);
 
 
@@ -95,9 +95,11 @@ int main (){
 		printf("Pick the y-coordinate of the cell you want to capture: ");
 		scanf("%d", &ycoord);
 		printf("\n");
+		printf("You are claming box %d", pos[ycoord][xcoord]);
 		
 		if(pos[ycoord][xcoord] >= 1 && pos[ycoord][xcoord] <= 9){
-			nextplayermove(&over, pos[ycoord][xcoord], &good, &start, &go, &val, R, B, S, T);			
+			printf("You are claming box %d", pos[ycoord][xcoord]);
+			nextplayermove(&over, pos[ycoord][xcoord], &good, &start, &go, &val, R, B, S, T, ycoord, xcoord);			
    		}
    		else{
    			printf("Please input a valid slot!\n");
@@ -355,7 +357,7 @@ void expand(int go, int pos, int R[3][3], int B[3][3], int S[3][3], int T[3][3])
     // go changes in the nextplayer function so i kept it the same in expand
 }
 
-void update(int *go, int pos, int *good, int R[3][3], int S[3][3], int B[3][3], int T[3][3]){
+void update(int *go, int pos, int good, int R[3][3], int S[3][3], int B[3][3], int T[3][3]){
 
     *good = 0;
     int i, j;
@@ -409,7 +411,7 @@ void update(int *go, int pos, int *good, int R[3][3], int S[3][3], int B[3][3], 
 }
 
 void nextplayermove(int *over, int pos, int *good, int *start, 
-    int *go, int *val, int R[3][3], int B[3][3], int S[3][3], int T[3][3]){
+    int *go, int *val, int R[3][3], int B[3][3], int S[3][3], int T[3][3], int ycoord, int xcoord){
 
         int i = 0;
         int j = 0;
@@ -420,31 +422,31 @@ void nextplayermove(int *over, int pos, int *good, int *start,
 
 		printf("%d", pos);
 
-		if(*over == 1 && *start == 1 && *go == 1){
-			R[i][j]=pos;
-			S[i][j]=1;
+		if((*over) == 1 && (*start) == 1 && (*go) == 1){
+			R[ycoord][xcoord]=pos;
+			S[ycoord][xcoord]=1;
 			(*good) = 1;
-		} else if(*over == 1 && *start == 1 && *go == 0){
-			B[i][j]=pos;
-			S[i][j]=1;
+		} else if((*over) == 1 && (*start) == 1 && (*go) == 0){
+			B[ycoord][xcoord]=pos;
+			S[ycoord][xcoord]=1;
 			(*good) = 1;
 		}
 
 		//Is it in R or B?
 		for(i=0;i<3;i++){
 			for(j=0;j<3;j++){
-				if(R[i][j]==pos){
+				if(R[ycoord][xcoord]==pos){
 					r++;
 				}
 
-				if(B[i][j]==pos){
+				if(B[ycoord][xcoord]==pos){
 					b++;
 				}
 			}
 		}
 
-		if(*over == 0 && *start == 0 &&((r==1&&*go==1)||(b==1&&*go==0))){
-			update(*go, pos, *good, R, S, B, T);
+		if((*over) == 0 && (*start) == 0 &&((r==1&&(*go)==1)||(b==1&&(*go)==0))){
+			update((*go), pos, (*good), R, S, B, T);
 		}
 
 		//Is the game ongoing?
@@ -460,11 +462,11 @@ void nextplayermove(int *over, int pos, int *good, int *start,
 			}
 		}
 
-		if(*start == 1 && ro == 1 && bo == 1){
+		if((*start) == 1 && ro == 1 && bo == 1){
 			(*start) = 0;
 		}
 
-		if(*over == 0 && *good == 0){
+		if((*over) == 0 && (*good) == 0){
 			(*good) = 1;
 			if(*go == 1){
 				(*go) = 0;
